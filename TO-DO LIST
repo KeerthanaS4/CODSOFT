@@ -1,0 +1,72 @@
+import os
+
+def create_file():
+    open('todo.txt', 'a').close()
+    print("To-Do List file created.")
+
+def add_task(task):
+    with open('todo.txt', 'a') as file:
+        file.write(task + '\n')
+    print("Task added.")
+
+def view_tasks():
+    if not os.path.exists('todo.txt'):
+        print("No tasks found.")
+        return
+    with open('todo.txt', 'r') as file:
+        print("Tasks:")
+        for task in file.readlines():
+            print(task.strip())
+
+def update_task(index, new_task):
+    tasks = []
+    with open('todo.txt', 'r') as file:
+        for i, task in enumerate(file.readlines()):
+            tasks.append(task.strip())
+    tasks[index - 1] = new_task
+    with open('todo.txt', 'w') as file:
+        for task in tasks:
+            file.write(task + '\n')
+    print("Task updated.")
+
+def delete_task(index):
+    tasks = []
+    with open('todo.txt', 'r') as file:
+        for i, task in enumerate(file.readlines()):
+            tasks.append(task.strip())
+    del tasks[index - 1]
+    with open('todo.txt', 'w') as file:
+        for task in tasks:
+            file.write(task + '\n')
+    print("Task deleted.")
+
+def main():
+    if not os.path.exists('todo.txt'):
+        create_file()
+    while True:
+        print("\nTo-Do List")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Update Task")
+        print("4. Delete Task")
+        print("5. Exit")
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            task = input("Enter task: ")
+            add_task(task)
+        elif choice == 2:
+            view_tasks()
+        elif choice == 3:
+            index = int(input("Enter task index to update: "))
+            new_task = input("Enter new task: ")
+            update_task(index - 1, new_task)
+        elif choice == 4:
+            index = int(input("Enter task index to delete: "))
+            delete_task(index - 1)
+        elif choice == 5:
+            break
+        else:
+            print("Invalid choice. Please enter a valid choice.")
+
+if __name__ == "__main__":
+    main()
